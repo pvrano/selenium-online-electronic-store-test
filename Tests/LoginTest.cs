@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using OnlineElectronicShopTest.Pages;
+using OnlineElectronicShopTest.Utilities;
 using OpenQA.Selenium;
 
 namespace OnlineElectronicShopTest.Tests
@@ -13,7 +15,7 @@ namespace OnlineElectronicShopTest.Tests
     public class LoginTest: TestBase
     {
         private LoginPage loginPage;
-        
+        private By welcomeText => By.Id("nameofuser");
 
         [SetUp]
         public void Setup()
@@ -33,11 +35,13 @@ namespace OnlineElectronicShopTest.Tests
             this.loginPage.NavigateToLoginPage();
             this.loginPage.LoginToApplication("pvrano", "1234567");
 
-             string welcomeTextActual = driver.FindElement(By.Id("nameofuser")).Text;
-             Console.WriteLine(welcomeTextActual);
+             
+            IWebElement welcomeTxt = WaitHelpers.WaitForElementVisible(driver, welcomeText);
+            string welcometextActual = welcomeTxt.Text;
+            Console.WriteLine(welcometextActual);
             string welcomeExpectedText = "Welcome pvrano";
 
-            Assert.AreEqual(welcomeExpectedText, welcomeTextActual, "The text is not as expected.");
+            Assert.That(welcometextActual, Is.EqualTo(welcomeExpectedText), "The text is not as expected.");
         }
     }
 }

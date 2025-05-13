@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OnlineElectronicShopTest.Utilities;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
@@ -18,35 +19,35 @@ namespace OnlineElectronicShopTest.Pages
         }
 
         
-        private IWebElement LoginNavButton => driver.FindElement(By.Id("login2"));
-        private IWebElement UsernameInput => driver.FindElement(By.Id("loginusername"));
+        private By LoginNavButton => By.Id("login2");
+        private By UsernameInput => By.Id("loginusername");
 
         internal void NavigateToLoginPage()
         {
             this.driver.Navigate().GoToUrl("https://www.demoblaze.com/index.html");
         }
 
-        private IWebElement PasswordInput => driver.FindElement(By.Id("loginpassword"));
+        private By PasswordInput => By.Id("loginpassword");
         
-        private IWebElement LoginSubmitButton => driver.FindElement(By.XPath("//button[contains(text(),'Log in')]"));
+        private By LoginSubmitButton => By.XPath("//button[contains(text(),'Log in')]");
         
 
         public void OpenLoginModel()
         {
-            LoginNavButton.Click();
+            WaitHelpers.WaitForElementClickable(driver,LoginNavButton).Click();
         }
 
         public void EnterCredentials(string username, string password)
         {
-            UsernameInput.SendKeys(username);
-            PasswordInput.SendKeys(password);
+            WaitHelpers.WaitForElementVisible(driver, UsernameInput).SendKeys(username);
+            WaitHelpers.WaitForElementVisible(driver, PasswordInput).SendKeys(password);
         }
 
         public void SubmitLogin()
         {
-            if (LoginSubmitButton.Displayed)
+            if (WaitHelpers.WaitForElementVisible(driver, LoginSubmitButton).Displayed)
             {
-                LoginSubmitButton.Click();
+                WaitHelpers.WaitForElementVisible(driver, LoginSubmitButton).Click();
             }
             else
             {
